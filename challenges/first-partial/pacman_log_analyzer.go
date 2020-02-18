@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"bufio"
-	"log"
+	"strconv"
 	"strings"
 )
 
@@ -24,7 +24,7 @@ func check(e error){		//Function to verify if there is a nil and if not to conti
 	}
 }
 
-func write(toWrite string, file *os.File){	//to write into a txt file, got this from internet
+func writeToTxt(toWrite string, file *os.File){	//to write into a txt file, got this from internet
 
 	_,err:=file.WriteString(toWrite)
 	check(err)
@@ -55,10 +55,11 @@ func main() {
 	check(err)
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)	//To read the file 
+	scanner := bufio.NewScanner(file)	//To read the file
+
 	for scanner.Scan() { 	//This reads line by line the file
 
-		line := scanner.text()
+		line := scanner.Text()
 		info := strings.Split(line, " ")//Gives me an array of the words in that line separated by a space
 
 		var name, date string
@@ -89,7 +90,7 @@ func main() {
 			m[name].updateCount = 0
 			m[name].removalDate = "-"
 			removals--
-
+		}
 		if(operation == "removed") {
 			m[name].removalDate = date
 			removals++
@@ -106,10 +107,10 @@ func main() {
 	//template of the Txt file
 	writeToTxt("Pacman Packages Report\n",fileTxt)
 	writeToTxt("----------------------\n",fileTxt)
-	writeToTxt("- Installed packages : "+strconv.Itoa(installed)+"\n",fileTxt)
-	writeToTxt("- Removed packages   : "+strconv.Itoa(removed)+"\n",fileTxt)
-	writeToTxt("- Upgraded packages  : "+strconv.Itoa(upgraded)+"\n",fileTxt)
-	writeToTxt("- Current installed  : "+strconv.Itoa(current)+"\n\n",fileTxt)
+	writeToTxt("- Installed packages : "+strconv.Itoa(instalations)+"\n",fileTxt)
+	writeToTxt("- Removed packages   : "+strconv.Itoa(removals)+"\n",fileTxt)
+	writeToTxt("- Upgraded packages  : "+strconv.Itoa(upgrades)+"\n",fileTxt)
+	writeToTxt("- Current installed  : "+strconv.Itoa(actualInstalls)+"\n\n",fileTxt)
 
 	for _,p := range m{
 		writeToTxt("- Package Name        : "+p.name+"\n",fileTxt)
