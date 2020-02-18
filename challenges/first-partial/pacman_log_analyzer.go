@@ -67,7 +67,7 @@ func main() {
 		//An if to verify if its a package operation
 		if(len(info) > 4) {
 			name = info[4]
-			date = line[0][1:len(line[0])] +" "+ line[1][:len(line[1])-1]
+			date = info[0][1:len(info[0])] +" "+ info[1][:len(info[1])-1]
 		}
 
 		operation := info[3]	//What the package went through
@@ -91,6 +91,7 @@ func main() {
 			m[name].removalDate = "-"
 			removals--
 		}
+
 		if(operation == "removed") {
 			m[name].removalDate = date
 			removals++
