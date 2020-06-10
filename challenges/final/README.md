@@ -6,6 +6,30 @@ This is the final challenge  for the Distributed Computing Class. This is the in
 A strong recomendation is that you develop your solution the most simple, readable, scalable and plugable as possible. In the future you may reuse this code to
 be integrated with  more services, so a well-defined design and implementation will make it easier to integrate new modules into your distributed application.
 
+//////////////////////////////////////////////////////////////////////
+
+The project doesn't seem to be working because of trouble getting the correct mango import, I get the following$
+
+.\main.go:113:15: cannot assign "nanomsg.org/go/mangos/v2".Socket to sock (type "github.com/nanomsg/mangos".Soc$
+        "nanomsg.org/go/mangos/v2".Socket does not implement "github.com/nanomsg/mangos".Socket (wrong type for$
+                have Info() "nanomsg.org/go/mangos/v2".ProtocolInfo
+                want Info() "github.com/nanomsg/mangos".ProtocolInfo
+
+Even though I only import the one with github... when checking my mod file it used to say that mangos was
+not compatible...
+
+I didn't finish the CUDA implementation but I added some filters from a repo I found in a tutorial about image $
+
+Hope at least the conections make sense between all the different packages, they did work for me a couple times
+before running into the issue stated above, it happened while I was moving and organizing files
+
+
+Hope it makes sense!
+
+///////////////////////////////////////////////////////////////////////
+
+
+
 Distributed and Parallel Image Processing
 -----------------------------------------
 
