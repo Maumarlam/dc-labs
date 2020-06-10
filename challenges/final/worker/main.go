@@ -68,16 +68,19 @@ func ImageFilter(path string, filterType string) {
 		g := gift.New(gift.Grayscale())
 		changed := image.NewRGBA(g.Bounds(target.Bounds()))
 		g.Draw(changed, target)
+		saveImage("ImageTest", changed)
 	}
 	if filterType == "blur" {
 		g := gift.New(gift.GaussianBlur(1))
 		changed := image.NewRGBA(g.Bounds(target.Bounds()))
 		g.Draw(changed, target)
+		saveImage("ImageTest", changed)
 	}
 	if filterType == "pixelate" {
 		g := gift.New(gift.Pixelate(5))
 		changed := image.NewRGBA(g.Bounds(target.Bounds()))
 		g.Draw(changed, target)
+		saveImage("ImageTest", changed)
 	}
 }
 
