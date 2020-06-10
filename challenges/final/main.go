@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"time"
 
-	"final/controller"
-	"final/scheduler"
+	"github.com/Maumarlam/dc-labs/tree/final-challenge/challenges/final/controller"
+	"github.com/Maumarlam/dc-labs/tree/final-challenge/challenges/final/scheduler"
 
 	"github.com/sonyarouje/simdb/db" //Simple database for go (JSON)
 )
