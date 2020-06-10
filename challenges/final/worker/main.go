@@ -13,11 +13,11 @@ import (
 	pb "github.com/Maumarlam/dc-labs/challenges/final/proto"
 
 	//"go.nanomsg.org/mangos/protocol/sub"
+	"go.nanomsg.org/mangos"
 	"go.nanomsg.org/mangos/protocol/respondent"
 	"google.golang.org/grpc"
 
 	"github.com/disintegration/gift" //For filters
-	"go.nanomsg.org/mangos"
 
 	// register transports
 	_ "go.nanomsg.org/mangos/transport/all"

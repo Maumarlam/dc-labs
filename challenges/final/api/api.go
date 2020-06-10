@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"path/filepath"
@@ -30,6 +31,7 @@ var userList []user //To store all the users created
 
 //Checar parametros que necesita para empezar
 func apiStart() {
+	log.Printf("Entro apistart")
 	r := gin.Default()
 
 	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{

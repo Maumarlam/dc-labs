@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -36,6 +37,7 @@ func date() string {
 var workersList []Worker // Create an empty list of workers
 
 func Start(contAddr string, db *db.Driver) {
+	log.Printf("controller started")
 	//var sock mangos.Socket
 	//GET THESURVEYOR LISTENING
 	sock, err := surveyor.NewSocket()

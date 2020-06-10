@@ -21,6 +21,7 @@ type Job struct {
 }
 
 func schedule(job Job) {
+	log.Printf("scheduler started")
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(job.Address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
