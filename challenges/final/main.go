@@ -6,19 +6,37 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/CodersSquad/dc-labs/challenges/third-partial/controller"
-	"github.com/CodersSquad/dc-labs/challenges/third-partial/scheduler"
+	"final/controller"
+	"final/scheduler"
+
+	"github.com/sonyarouje/simdb/db" //Simple database for go (JSON)
 )
 
 func main() {
 	log.Println("Welcome to the Distributed and Parallel Image Processing System")
 
+	controllerAddress := "tcp://localhost:40899"
+	port := ":8080"
+	DB := "workers"
+
+	//Start the database
+	db, err := db.New(DB) //Create the database
+	if err != nil {
+		panic(err)
+	}
+
 	// Start Controller
-	go controller.Start()
+	go controller.Start(controllerAddress, db)
 
 	// Start Scheduler
 	jobs := make(chan scheduler.Job)
 	go scheduler.Start(jobs)
+
+	//Start api
+	//Que le necesito mandar a mi api?
+	go api.apiStart()
+
+	///////////////////////////////////////////////////
 	// Send sample jobs
 	sampleJob := scheduler.Job{Address: "localhost:50051", RPCName: "hello"}
 

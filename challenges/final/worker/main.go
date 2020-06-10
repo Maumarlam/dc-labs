@@ -4,15 +4,20 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"image"
+	"image/png"
 	"log"
 	"net"
 	"os"
 
 	pb "github.com/CodersSquad/dc-labs/challenges/third-partial/proto"
 	"go.nanomsg.org/mangos"
-	"go.nanomsg.org/mangos/protocol/sub"
+
+	//"go.nanomsg.org/mangos/protocol/sub"
+	"go.nanomsg.org/mangos/protocol/respondent"
 	"google.golang.org/grpc"
 
+	"github.com/disintegration/gift" //For filters
 	// register transports
 	_ "go.nanomsg.org/mangos/transport/all"
 )
@@ -26,10 +31,14 @@ type server struct {
 	pb.UnimplementedGreeterServer
 }
 
-var (
+var ( //INFO inside worker
 	controllerAddress = ""
 	workerName        = ""
 	tags              = ""
+	status            = ""
+	usage             = ""
+	url               = ""
+	port              = ""
 )
 
 func die(format string, v ...interface{}) {
@@ -49,13 +58,58 @@ func init() {
 	flag.StringVar(&tags, "tags", "gpu,superCPU,largeMemory", "Comma-separated worker tags")
 }
 
+//Filter function
+func ImageFilter(path string, filterType string) {
+	target := loadImage(path)
+	if filterType == "grayscale" {
+		g := gift.New(gift.Grayscale())
+		changed := image.NewRGBA(g.Bounds(target.Bounds()))
+		g.Draw(changed, target)
+	}
+	if filterType == "blur" {
+		g := gift.New(gift.GaussianBlur(1))
+		changed := image.NewRGBA(g.Bounds(target.Bounds()))
+		g.Draw(changed, target)
+	}
+	if filterType == "pixelate" {
+		g := gift.New(gift.Pixelate(5))
+		changed := image.NewRGBA(g.Bounds(target.Bounds()))
+		g.Draw(changed, target)
+	}
+}
+
+func loadImage(filename string) image.Image {
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Fatalf("os.Open failed: %v", err)
+	}
+	defer f.Close()
+	img, _, err := image.Decode(f)
+	if err != nil {
+		log.Fatalf("image.Decode failed: %v", err)
+	}
+	return img
+}
+
+func saveImage(filename string, img image.Image) {
+	f, err := os.Create(filename)
+	if err != nil {
+		log.Fatalf("os.Create failed: %v", err)
+	}
+	defer f.Close()
+	err = png.Encode(f, img)
+	if err != nil {
+		log.Fatalf("png.Encode failed: %v", err)
+	}
+}
+
 // joinCluster is meant to join the controller message-passing server
 func joinCluster() {
 	var sock mangos.Socket
 	var err error
 	var msg []byte
 
-	if sock, err = sub.NewSocket(); err != nil {
+	if sock, err = respondent.NewSocket(); err != nil {
 		die("can't get new sub socket: %s", err.Error())
 	}
 
@@ -68,11 +122,18 @@ func joinCluster() {
 	if err != nil {
 		die("cannot subscribe: %s", err.Error())
 	}
+
 	for {
 		if msg, err = sock.Recv(); err != nil {
 			die("Cannot recv: %s", err.Error())
 		}
 		log.Printf("Message-Passing: Worker(%s): Received %s\n", workerName, string(msg))
+
+		workerData := workerName + "|" + tags + "|" + status + "|" + usage + "|" + url + "|" + port
+		if err = sock.Send([]byte(workerData)); err != nil {
+			die("Cannot send... %s", err.Error())
+		}
+
 	}
 }
 

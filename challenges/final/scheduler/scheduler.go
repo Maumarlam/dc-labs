@@ -5,7 +5,8 @@ import (
 	"log"
 	"time"
 
-	pb "github.com/CodersSquad/dc-labs/challenges/third-partial/proto"
+	pb "final/proto"
+
 	"google.golang.org/grpc"
 )
 
@@ -30,6 +31,8 @@ func schedule(job Job) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
+	/////////Add things based on Job struct at the top
 	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: job.RPCName})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
