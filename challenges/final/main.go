@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"math/rand"
+	"time"
 
+	"github.com/Maumarlam/dc-labs/challenges/final/api"
 	"github.com/Maumarlam/dc-labs/challenges/final/controller"
 	"github.com/Maumarlam/dc-labs/challenges/final/scheduler"
 
@@ -31,10 +35,10 @@ func main() {
 
 	//Start api
 	//Que le necesito mandar a mi api?
-	go api.apiStart()
+	go api.Start()
 
 	///////////////////////////////////////////////////
-	/* Send sample jobs
+	// Send sample jobs
 	sampleJob := scheduler.Job{Address: "localhost:50051", RPCName: "hello"}
 
 	for {
@@ -42,6 +46,6 @@ func main() {
 		jobs <- sampleJob
 		time.Sleep(time.Second * 5)
 	}
-	/ API*/
+	// API
 	// Here's where your API setup will be
 }

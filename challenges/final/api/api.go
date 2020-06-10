@@ -30,7 +30,7 @@ var userList []user //To store all the users created
 // }
 
 //Checar parametros que necesita para empezar
-func apiStart() {
+func Start() {
 	log.Printf("Entro apistart")
 	r := gin.Default()
 
